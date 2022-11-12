@@ -7,7 +7,18 @@
         .slidecontainer,.slider,textarea{width:100%}.slider{-webkit-appearance:none;appearance:none;height:25px;background:#d3d3d3;outline:0;opacity:.7;-webkit-transition:.2s;transition:opacity .2s}.slider:hover{opacity:1}.slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:25px;height:25px;background:#0433aa;cursor:pointer}.slider::-moz-range-thumb{width:25px;height:25px;background:#0420aa;cursor:pointer}.form-container{width:80%;max-width:750px;margin-left:auto;margin-right:auto}input{display:block}textarea{height:125px;padding:12px 20px;box-sizing:border-box;border:2px solid #ccc;border-radius:4px;background-color:#f8f8f8;font-size:16px;resize:none}input[type=submit]{background-color:#143fab;border:none;color:#fff;padding:16px 64px;text-decoration:none;margin:4px auto;cursor:pointer}h6{font-size:x-small;color:gray}a,a:active,a:hover,a:visited{color:inherit}
     |}</style>
 </head>
-<body><div class="form-container"><form method="post"><input type="hidden" name="requestId" value="{data}"><label for="score">Rate this article: <span id="scoreDisplay">5</span></label><div class="slidecontainer"><input type="range" min="0" max="10" value="5" class="slider" id="score" name="score"></div><label for="comments">Leave a comment:</label><textarea id="comments" maxlength="500" name="comments"></textarea><input type="submit" value="Submit!"></form><h6>Feedback form is provided by an open-source and self-hosted service <a href="https://github.com/abar193/replayka">replayka</a>.</h6></div>
-<script>{|var slider=document.getElementById("score"),output=document.getElementById("scoreDisplay");slider
-        .oninput=function(){output.innerHTML=this.value}|}</script></body>
+<body>
+<div class="form-container">
+    <form method="post"><input type="hidden" name="requestId" value="{data}"><label for="score">Rate this article: <span
+                    id="scoreDisplay">5</span></label>
+        <div class="slidecontainer"><input type="range" min="0" max="10" value="5" class="slider" id="score"
+                                           name="score"></div>
+        <label for="comments">Leave a comment:</label><textarea id="comments" maxlength="500"
+                                                                name="comments"></textarea><input type="submit"
+                                                                                                  value="Submit!">
+    </form>
+    <h6>Feedback form is provided by cookieless open-source service <a href="https://github.com/abar193/replayka">replayka</a>.
+    </h6></div>
+<script>{|var slider=document.getElementById("score"),output=document.getElementById("scoreDisplay");slider.oninput=function(){output.innerHTML=this.value}|}</script>
+</body>
 </html>
