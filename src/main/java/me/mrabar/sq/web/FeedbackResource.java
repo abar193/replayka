@@ -16,6 +16,8 @@ import javax.ws.rs.core.HttpHeaders;
 public class FeedbackResource {
   @Inject
   Template form;
+  @Inject
+  Template ok;
 
   @GET
   public TemplateInstance getForm(@Context HttpHeaders headers, @Context RoutingContext context) {
@@ -23,8 +25,14 @@ public class FeedbackResource {
   }
 
   @POST
-  public String submit(@Context HttpHeaders headers, @Context RoutingContext context, @RestForm String fav_language) {
-    System.out.println(fav_language);
-    return "OK";
+  public TemplateInstance submit(
+      @Context HttpHeaders headers,
+      @Context RoutingContext context,
+      @RestForm String requestId,
+      @RestForm Integer score,
+      @RestForm String comments
+  ) {
+    System.out.printf("%s %d %s\n", requestId, score, comments);
+    return ok.instance();
   }
 }

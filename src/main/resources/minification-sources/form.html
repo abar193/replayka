@@ -1,0 +1,22 @@
+<body>
+<div class="form-container">
+  <h3>Your feedback is always appreciated!</h3>
+  <form method="post">
+    <input type="hidden" name="requestId" value="{data}"/>
+    <label for="score">Rate this article: <span id="scoreDisplay">5</span></label>
+    <div class="slidecontainer">
+      <input type="range" min="0" max="10" value="5" class="slider" id="score" name="score"/>
+    </div>
+    <label for="comments">Leave a comment:</label>
+    <textarea id="comments" maxlength="500" name="comments"></textarea>
+    <input type="submit" value="Submit!">
+  </form>
+  <h6>Feedback form is provided by an open-source and self-hosted service
+    <a href="https://github.com/abar193/replayka">replayka</a>.</h6>
+</div>
+<script>
+    var slider = document.getElementById("score");
+    var output = document.getElementById("scoreDisplay");
+    slider.oninput = function () { output.innerHTML = this.value;}
+</script>
+</body>
