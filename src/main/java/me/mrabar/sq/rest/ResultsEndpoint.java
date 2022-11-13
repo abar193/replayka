@@ -5,7 +5,6 @@ import me.mrabar.sq.model.OverviewRow;
 import me.mrabar.sq.service.BlogService;
 import me.mrabar.sq.service.FeedbackService;
 import org.jboss.resteasy.reactive.RestPath;
-import org.jboss.resteasy.reactive.RestQuery;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -22,11 +21,11 @@ public class ResultsEndpoint {
   @Inject
   BlogService blogService;
 
-  @Path("results")
+  @Path("{key}/overview")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public List<OverviewRow> hello(@RestQuery String blogName) {
-    return feedbackService.blogStats(blogName);
+  public List<OverviewRow> hello(@RestPath String key) {
+    return feedbackService.blogStats(key);
   }
 
   @Path("{key}")

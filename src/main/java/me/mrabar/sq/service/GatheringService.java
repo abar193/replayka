@@ -12,12 +12,16 @@ import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.HttpHeaders;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Singleton
 public class GatheringService {
   private static final Logger LOG = Logger.getLogger(GatheringService.class);
+  private static final List<String> NECESSARY_HEADERS = List.of("Referer", "Accept-Language", "User-Agent");
   @Inject
   SQLQueryFactory factory;
   @Inject
@@ -29,7 +33,7 @@ public class GatheringService {
       String blogKey,
       String page,
       String ip,
-      MultivaluedMap<String, String> headers
+      Map<String, String> headers
   ) throws BlogNotFoundException {
 
     var blog = blogService.byKey(blogKey);
@@ -71,6 +75,16 @@ public class GatheringService {
         .execute();
 
     return i > 0;
+  }
+
+  public Map<String, String> cleanHeaders(HttpHeaders headers) {
+    var m = new HashMap<String, String>();
+    for (String h : NECESSARY_HEADERS) {
+      if (headers.getHeaderString(h) != null) {
+        m.put(h, headers.getHeaderString(h));
+      }
+    }
+    return m;
   }
 
   private UUID getRequestId() {

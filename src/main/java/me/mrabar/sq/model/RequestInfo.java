@@ -1,6 +1,6 @@
 package me.mrabar.sq.model;
 
-import javax.ws.rs.core.MultivaluedMap;
+import java.util.Map;
 
-public record RequestInfo(String ip, MultivaluedMap<String, String> headers) {
+public record RequestInfo(String ip, Map<String, String> headers) {
 }

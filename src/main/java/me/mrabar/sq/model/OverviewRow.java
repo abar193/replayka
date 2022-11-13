@@ -7,7 +7,7 @@ public record OverviewRow(
     String pageName,
     long viewed,
     long responded,
-    double score,
+    Double score,
     List<String> comments // potential weak point
 ) {
 }

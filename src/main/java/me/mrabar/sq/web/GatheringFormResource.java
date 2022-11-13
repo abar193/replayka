@@ -13,9 +13,10 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MediaType;
 
 @Path("/f/{key}")
-@Produces("text/html")
+@Produces(MediaType.TEXT_HTML)
 public class GatheringFormResource {
   @Inject
   GatheringService gatheringService;
@@ -24,8 +25,6 @@ public class GatheringFormResource {
   Template form;
   @Inject
   Template ok;
-  @Inject
-  Template message;
 
   @GET
   public TemplateInstance getForm(
@@ -33,36 +32,32 @@ public class GatheringFormResource {
       @Context RoutingContext context,
       @RestPath String key,
       @QueryParam("page") String page
-  ) {
-    try {
-      var requestId = gatheringService.createRequestId(
-          key, page, context.request().host(), headers.getRequestHeaders()
-      );
-      return form.data("data", requestId);
-    } catch (BlogNotFoundException e) {
-      return message.data("message", "Invalid blogKey provided. How could this ever happen?!");
-    }
+  ) throws BlogNotFoundException {
+
+    var requestId = gatheringService.createRequestId(
+        key, page, context.request().host(), gatheringService.cleanHeaders(headers)
+    );
+
+    return form.data("data", requestId);
   }
 
   @POST
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
   public TemplateInstance submit(
       @RestPath String key,
       @RestForm String requestId,
       @RestForm Integer score,
       @RestForm String comments
-  ) {
-    try {
-      validateParams(score, comments);
-    } catch (ScriptKiddieException e) {
-      return message.data("message", "Oh no, you've totally hacked this service, I surrender!");
-    }
+  ) throws ScriptKiddieException {
 
+    validateParams(score, comments);
     gatheringService.saveFeedback(requestId, score, comments);
+
     return ok.instance();
   }
 
   private void validateParams(Integer score, String comments) throws ScriptKiddieException {
-    if (score < 0 || score > 10 || comments.length() > 510) {
+    if (score < 0 || score > 10 || comments.length() > 500) {
       throw new ScriptKiddieException();
     }
   }

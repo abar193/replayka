@@ -19,7 +19,7 @@ public class FeedbackService {
   @Inject
   SQLQueryFactory factory;
 
-  public List<OverviewRow> blogStats(String blogName) {
+  public List<OverviewRow> blogStats(String blogKey) {
     var blog = QBlog.blog;
     var request = QRequest.request;
     var response = QResponse.response;
@@ -34,12 +34,12 @@ public class FeedbackService {
         .from(request)
         .join(blog).on(blog.blogId.eq(request.blogId))
         .leftJoin(response).on(response.requestId.eq(request.requestId))
-        .where(blog.blogName.eq(blogName))
+        .where(blog.blogKey.eq(blogKey))
         .groupBy(request.page)
         .fetch();
 
     return result.stream().map(t -> new OverviewRow(
-        blogName,
+        blogKey,
         t.get(0, String.class),
         t.get(1, Long.class),
         t.get(2, Long.class),
