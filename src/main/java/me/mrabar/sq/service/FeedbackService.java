@@ -26,14 +26,14 @@ public class FeedbackService {
     var result = factory
         .select(
             request.page,
-            request.requestId.count(),
-            response.requestId.count(),
+            request.requestUuid.count(),
+            response.requestUuid.count(),
             response.score.avg(),
             Expressions.template(String[].class, "array_agg({0})", response.comment)
         )
         .from(request)
         .join(blog).on(blog.blogId.eq(request.blogId))
-        .leftJoin(response).on(response.requestId.eq(request.requestId))
+        .leftJoin(response).on(response.requestUuid.eq(request.requestUuid))
         .where(blog.blogKey.eq(blogKey))
         .groupBy(request.page)
         .fetch();

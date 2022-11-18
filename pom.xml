@@ -51,6 +51,7 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-arc</artifactId>
         </dependency>
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-resteasy-reactive</artifactId>
@@ -61,16 +62,22 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-resteasy-reactive-qute</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
             <artifactId>quarkus-agroal</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-flyway</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jdbc-postgresql</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-resteasy-reactive-qute</artifactId>
-        </dependency>
+
 
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -112,6 +119,7 @@
                     <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder>
                     <sourceFolder>${project.basedir}/target/generated-sources/java</sourceFolder>
                 </configuration>
+
                 <dependencies>
                     <dependency>
                         <groupId>org.postgresql</groupId>

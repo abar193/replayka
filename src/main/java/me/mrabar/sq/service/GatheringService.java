@@ -54,8 +54,8 @@ public class GatheringService {
   public void saveFeedback(String requestId, int score, String comment) {
     var r = QResponse.response;
     factory.insert(r)
-        .columns(r.requestId, r.score, r.comment, r.requestUuid)
-        .values(requestId, score, comment, UUID.fromString(requestId))
+        .columns(r.requestUuid, r.score, r.comment)
+        .values(UUID.fromString(requestId), score, comment)
         .execute();
   }
 
@@ -64,11 +64,10 @@ public class GatheringService {
     var pb = new PathBuilderFactory();
 
     var i = factory.insert(r)
-        .columns(r.blogId, r.page, r.requestId, r.requestUuid, r.info)
+        .columns(r.blogId, r.page, r.requestUuid, r.info)
         .values(
             blogId,
             page,
-            requestId.toString(),
             requestId,
             Expressions.template(String.class, "{0}::jsonb", jsonMapper.objectToJson(info))
         )

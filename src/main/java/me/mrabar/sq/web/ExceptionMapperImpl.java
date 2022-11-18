@@ -13,8 +13,8 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class ErrorHandler implements ExceptionMapper<Exception> {
-  private static final Logger LOG = Logger.getLogger(ErrorHandler.class);
+public class ExceptionMapperImpl implements ExceptionMapper<Exception> {
+  private static final Logger LOG = Logger.getLogger(ExceptionMapperImpl.class);
 
   @Inject
   Template message;
