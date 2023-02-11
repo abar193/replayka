@@ -16,7 +16,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
         <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
-        <quarkus.platform.version>2.13.3.Final</quarkus.platform.version>
+        <quarkus.platform.version>2.15.1.Final</quarkus.platform.version>
         <skipITs>true</skipITs>
         <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
         <querydsl.version>5.0.0</querydsl.version>
@@ -78,6 +78,10 @@
             <artifactId>quarkus-jdbc-postgresql</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-oidc</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -109,7 +113,8 @@
                     <jdbcDriver>org.postgresql.Driver</jdbcDriver>
                     <jdbcUrl>jdbc:postgresql://localhost:5432/postgres</jdbcUrl>
                     <jdbcUser>quarkus</jdbcUser>
-                    <!--                In a normal project this would have been extracted elsewhere, but since it's a local DB there's no risk-->
+                    <!-- In a normal project this would have been extracted
+                        elsewhere, but since it's a local DB there's no risk-->
                     <jdbcPassword>password</jdbcPassword>
 
                     <schemaPattern>replayka</schemaPattern>

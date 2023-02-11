@@ -1,0 +1,41 @@
+.form-container {
+    width: 80%;
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.page-container {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+h3 {
+    font-size: x-large;
+    color: gray;
+}
+
+h6 {
+    font-size: x-small;
+    color: gray;
+}
+
+a, a:hover, a:visited, a:active {
+    color: inherit;
+}
+
+.blogs {
+    width: 100%;
+    padding-bottom: 50px;
+}
+
+.pages {
+    width: 95%;
+    border-left: gray 5px solid;
+
+}
+
+p {
+    margin: 0;
+}

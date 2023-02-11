@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Replayka overview</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-container">
+Hi, {user.name}!
+<table class="blogs">
+    {#for blog in blogs}
+        <tr>
+            <td><a href="/internal?blogKey={blog.key}">🔑 {blog.key}</a></td>
+            <td class="{#if blog.key == selectedBlog}selected{/if}">{blog.name}</td>
+            <td>
+                {#if blog.misc.url}
+                    <a href="{blog.misc.url}">🔗 URL</a>
+                {/if}
+            </td>
+        </tr>
+        {#if blog.key == selectedBlog}
+            <tr><td colspan="3">
+            <table class="pages">
+            {#for page in blogPages}
+                <tr>
+                <td>{page.pageName}</td>
+                <td>👁 {page.viewed}</td>
+                <td>🗣 {page.responded}</td>
+                <td>💯 {page.score}</td>
+                <td>
+                {#for comment in page.comments}
+                    <p>{comment}</p>
+                {/for}
+                </td>
+                </tr>
+            {/for}
+            </table>
+            </td>
+            </tr>
+        {/if}
+    {/for}
+</table>
+
+<button onclick="document.getElementById('register').showModal()">Register new blog</button>
+<button onclick="document.getElementById('embed').showModal()">Embed to your page</button>
+<dialog id="register">
+    <form action="/internal/blog" method="post">
+        <button style="float: right" onclick="document.getElementById('register').close()">❎</button>
+        <h3>Register your blog</h3>
+        <table>
+            <tr>
+                <td><label for="blogKey">Blog key (unique identifier) </label></td>
+                <td><input required type="text" name="blogKey"/></td>
+            </tr>
+            <tr>
+                <td><label for="blogKey">Blog name </label></td>
+                <td><input required type="text" name="blogName"/></td>
+            </tr>
+            <tr>
+                <td><label for="blogKey">URL of your blog (optional) </label></td>
+                <td><input type="text" name="blogUrl"/></td>
+            </tr>
+            <tr>
+                <td><label for="blogKey">Topic, content, whatever, I don't really care </label></td>
+                <td><input type="text" name="blogTopic"/></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" value="Submit"/></td>
+            </tr>
+        </table>
+        <h6>If you need something edited, just go to DB and edit it, duh!</h6>
+    </form>
+</dialog>
+
+<dialog id="embed">
+    <button style="float: right" onclick="document.getElementById('embed').close()">❎</button>
+    Just append the following code to your page:
+    <pre>
+    <code>
+        &lt;iframe style="border:none; margin: 3px auto; display: block;" width="100%" height="400"
+                src="%site%/f/%your-key%?page=%page-name%" title="Feedback">&lt;/iframe>
+    </code>
+    </pre>
+    And replace %site% with url of this instance of Replayka, %your-key% with
+    your blog-key.
+    <p/>
+    It is your choice if you want to include %page-name%,
+    and it will be used to divide analytics into pages.
+</dialog>
+</body>
+</html>

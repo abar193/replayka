@@ -1,7 +1,6 @@
 package me.mrabar.sq.service;
 
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.PathBuilderFactory;
 import com.querydsl.sql.SQLQueryFactory;
 import me.mrabar.replayka.QRequest;
 import me.mrabar.replayka.QResponse;
@@ -21,7 +20,7 @@ import java.util.UUID;
 @Singleton
 public class GatheringService {
   private static final Logger LOG = Logger.getLogger(GatheringService.class);
-  private static final List<String> NECESSARY_HEADERS = List.of("Referer", "Accept-Language", "User-Agent");
+  private static final List<String> STORED_HEADERS = List.of("Referer", "Accept-Language", "User-Agent");
   @Inject
   SQLQueryFactory factory;
   @Inject
@@ -36,7 +35,7 @@ public class GatheringService {
       Map<String, String> headers
   ) throws BlogNotFoundException {
 
-    var blog = blogService.byKey(blogKey);
+    var blog = blogService.get(blogKey);
     if (blog == null) {
       throw new BlogNotFoundException();
     }
@@ -61,7 +60,6 @@ public class GatheringService {
 
   private boolean insertRequest(long blogId, String page, UUID requestId, RequestInfo info) {
     var r = QRequest.request;
-    var pb = new PathBuilderFactory();
 
     var i = factory.insert(r)
         .columns(r.blogId, r.page, r.requestUuid, r.info)
@@ -78,7 +76,7 @@ public class GatheringService {
 
   public Map<String, String> cleanHeaders(HttpHeaders headers) {
     var m = new HashMap<String, String>();
-    for (String h : NECESSARY_HEADERS) {
+    for (String h : STORED_HEADERS) {
       if (headers.getHeaderString(h) != null) {
         m.put(h, headers.getHeaderString(h));
       }

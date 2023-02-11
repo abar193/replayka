@@ -1,3 +1,6 @@
+-- create schema replayka;
+-- alter schema replayka owner to quarkus;
+
 create table replayka.blog
 (
     blog_id   serial
@@ -10,8 +13,7 @@ create table replayka.blog
     blog_misc jsonb
 );
 
-create index blog_blog_key_index
-    on replayka.blog (blog_key);
+create index blog_blog_key_index on replayka.blog (blog_key);
 
 create table replayka.request
 (
@@ -35,20 +37,3 @@ create table replayka.response
     score        integer,
     comment      varchar(500)
 );
-
---
--- grant insert, select on replayka.request to quarkus;
---
--- grant insert, select on replayka.blog to quarkus;
---
--- alter table replayka.response
---     owner to postgres;
---
--- grant insert, select on replayka.response to quarkus;
---
--- alter table replayka.request
---     owner to postgres;
---
--- alter table replayka.blog
---     owner to postgres;
-

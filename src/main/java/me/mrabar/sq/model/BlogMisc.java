@@ -1,4 +1,6 @@
 package me.mrabar.sq.model;
 
-public record BlogMisc(String url, String blogTopic) {
+import java.time.LocalDateTime;
+
+public record BlogMisc(String url, String blogTopic, LocalDateTime createdAt) {
 }
