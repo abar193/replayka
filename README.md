@@ -1,4 +1,14 @@
-# survey-quarkus Project
+# Replayka
+
+Problem: a (low-traffic) static blog hosted with GitHub Pages.
+How many users actually read what I'm writing? What are their thoughts?
+
+Solution: Replayka. An open-source service that can be hosted at a low price and
+will analyze for you just that.
+
+Made with Quarkus, QueryDSL and Java 17 in my free time.
+
+## Generated boilerplate text from Quarkus below
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
