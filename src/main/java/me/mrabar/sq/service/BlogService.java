@@ -153,12 +153,11 @@ public class BlogService {
     )).collect(Collectors.toList());
   }
 
-  private String decodeUrl(String string) {
-    try {
-      return URLDecoder.decode(string, StandardCharsets.UTF_8.name());
-    } catch (UnsupportedEncodingException e) {
-      return string;
+  private String decodeUrl(String encoded) {
+    if (encoded == null) {
+      return "null";
     }
+    return URLDecoder.decode(encoded, StandardCharsets.UTF_8);
   }
 
 }
