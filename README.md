@@ -8,7 +8,49 @@ will analyze for you just that.
 
 Made with Quarkus, QueryDSL and Java 17 in my free time.
 
-## Generated boilerplate text from Quarkus below
+# Deployment
+
+I used fly.io to get my free hosting for the application. 
+
+## DB
+
+As for the database, I had to enter my credit card (hope I won't regret it) to 
+get a whole 3GB of storage. Plan is to see how long it will last and then start
+optimizations, unless I'll want to, well, pay (eugh!)
+
+```flyctl pg create
+? Choose an app name (leave blank to generate one): replayka-db
+automatically selected personal organization: %me%
+Some regions require a paid plan (fra, maa).
+See https://fly.io/plans to set up a plan.
+
+? Select region: Amsterdam, Netherlands (ams)
+? Select configuration: Specify custom configuration
+? Initial cluster size - Specify at least 3 for HA 1
+? Select VM size: shared-cpu-1x - 256
+? Volume size 3
+```
+
+Store credentials and whatever output you got, you will need it later.
+
+Proxy connection to DB: `fly proxy 5432 -a replayka-db`.
+
+Connect to postgres (on `localhost:5432`) using credentials that were provided to you in `pg create`, and do:
+```
+    CREATE USER quarkus WITH PASSWORD 'Something Secure Here, Please';
+    GRANT CONNECT ON DATABASE postgres TO quarkus;
+    CREATE SCHEMA replayka AUTHORIZATION quarkus;
+```
+
+## App
+
+Deploying application can be done using `fly.toml` and `flyctl deploy` (or `launch` for the first run?) 
+
+Create your own GitHub App for authentication. 
+
+Set secrets for `GITHUB_ID`, `GITHUB_SECRET` and `DB_PASS` (the one you created for your quarkus user).
+
+# Generated boilerplate text from Quarkus below
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 

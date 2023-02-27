@@ -7,7 +7,7 @@
 #
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.jvm -t quarkus/survey-quarkus-jvm .
+# docker build -f src/main/docker/Dockerfile.jvm -t registry.fly.io/replayka/replayka-jvm .
 #
 # Then run the container using:
 #
@@ -77,6 +77,10 @@
 ###
 FROM registry.access.redhat.com/ubi8/openjdk-17:1.14
 
+# For debugging
+#USER root
+#RUN microdnf update && microdnf install sudo iputils hostname findutils less nano && microdnf clean all
+
 ENV LANGUAGE='en_US:en'
 
 
@@ -88,6 +92,5 @@ COPY --chown=185 target/quarkus-app/quarkus/ /deployments/quarkus/
 
 EXPOSE 8080
 USER 185
-ENV JAVA_OPTS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
+ENV JAVA_OPTS="-Dquarkus.http.host=:: -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Dquarkus.oidc.authentication.force-redirect-https-scheme=true"
 ENV JAVA_APP_JAR="/deployments/quarkus-run.jar"
-

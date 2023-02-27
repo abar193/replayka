@@ -78,30 +78,6 @@ public class BlogService {
 
   // todo: U & D for Blog
 
-  public List<PageOverview> blogPages(Blog blog) {
-    return queryFactory.select(
-            QRequest.request.page,
-            QRequest.request.requestUuid.count(),
-            QResponse.response.score.avg(),
-            QResponse.response.comment.count()
-        )
-        .from(QBlog.blog)
-        .join(QRequest.request).on(QRequest.request.blogId.eq(QBlog.blog.blogId))
-        .join(QResponse.response).on(QResponse.response.requestUuid.eq(QRequest.request.requestUuid))
-        .where(QBlog.blog.blogId.eq(blog.id()))
-        .groupBy(QRequest.request.page)
-        .fetchResults()
-        .getResults()
-        .stream()
-        .map(p -> new PageOverview(
-            p.get(QRequest.request.page),
-            Optional.ofNullable(p.get(1, Long.class)).orElse(-1L),
-            Optional.ofNullable(p.get(2, Double.class)).orElse(-1.0),
-            Optional.ofNullable(p.get(3, Long.class)).orElse(-1L)
-        ))
-        .toList();
-  }
-
   public List<PageFeedback> pageFeedback(Blog blog, String pageName) {
     return queryFactory.select(QResponse.response.score, QResponse.response.comment, QResponse.response.responseTs)
         .from(QBlog.blog)

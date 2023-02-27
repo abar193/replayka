@@ -38,7 +38,7 @@ public class ExceptionMapperImpl implements ExceptionMapper<Exception> {
     } else {
       LOG.error("Unhandled exception " + e.getMessage(), e);
       return message.data("message", "Unknown exception")
-          .data("comment", "It has been logged, but it's unlikely that the logs will be checked often");
+          .data("comment", "You may report it to https://github.com/abar193/replayka/issues");
     }
   }
 
