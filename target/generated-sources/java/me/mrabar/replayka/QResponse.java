@@ -32,8 +32,6 @@ public class QResponse extends com.querydsl.sql.RelationalPathBase<QResponse> {
 
     public final NumberPath<Integer> score = createNumber("score", Integer.class);
 
-    public final com.querydsl.sql.ForeignKey<QRequest> responseRequestFk = createForeignKey(requestUuid, "request_uuid");
-
     public QResponse(String variable) {
         super(QResponse.class, forVariable(variable), "replayka", "response");
         addMetadata();

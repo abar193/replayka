@@ -34,11 +34,7 @@ public class QRequest extends com.querydsl.sql.RelationalPathBase<QRequest> {
 
     public final DateTimePath<java.sql.Timestamp> time = createDateTime("time", java.sql.Timestamp.class);
 
-    public final com.querydsl.sql.PrimaryKey<QRequest> requestPk = createPrimaryKey(requestUuid);
-
     public final com.querydsl.sql.ForeignKey<QBlog> requestBlogFk = createForeignKey(blogId, "blog_id");
-
-    public final com.querydsl.sql.ForeignKey<QResponse> _responseRequestFk = createInvForeignKey(requestUuid, "request_uuid");
 
     public QRequest(String variable) {
         super(QRequest.class, forVariable(variable), "replayka", "request");
