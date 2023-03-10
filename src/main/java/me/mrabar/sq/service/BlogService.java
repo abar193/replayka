@@ -11,7 +11,6 @@ import me.mrabar.sq.model.*;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
@@ -101,19 +100,23 @@ public class BlogService {
     var blog = QBlog.blog;
     var request = QRequest.request;
     var response = QResponse.response;
+    var timestampPath = Expressions.timePath(Timestamp.class, "tsmax");
+
     var result = queryFactory
         .select(
             request.page,
             request.requestUuid.count(),
             response.requestUuid.count(),
             response.score.avg(),
-            Expressions.template(String[].class, "array_agg({0})", response.comment)
+            Expressions.template(String[].class, "array_agg({0})", response.comment),
+            request.time.max().as(timestampPath)
         )
         .from(request)
         .join(blog).on(blog.blogId.eq(request.blogId))
         .leftJoin(response).on(response.requestUuid.eq(request.requestUuid))
         .where(blog.blogKey.eq(selectedBlog.key()))
         .groupBy(request.page)
+        .orderBy(timestampPath.desc())
         .fetch();
 
     return result.stream().map(t -> new PageOverviewComments(

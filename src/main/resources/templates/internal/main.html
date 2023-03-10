@@ -23,16 +23,17 @@ Hi, {user.name}!
             <table class="pages">
             {#for page in blogPages}
                 <tr>
-                <td>{page.pageName}</td>
-                <td>👁 {page.viewed}</td>
-                <td>🗣 {page.responded}</td>
-                <td>💯 {page.score}</td>
-                <td>
-                {#for comment in page.comments}
-                    <p>{comment}</p>
-                {/for}
-                </td>
+                    <td><b>{page.pageName}</b></td>
+                    <td>👁 {page.viewed}</td>
+                    <td>🗣 {page.responded}</td>
+                    <td>💯 {page.score}</td>
                 </tr>
+                {#if page.comments}
+                    {#for comment in page.comments}
+                        <tr>
+                        <td>💬</td> <td colspan="3">{comment}</td></tr>
+                    {/for}
+                {/if}
             {/for}
             </table>
             </td>
