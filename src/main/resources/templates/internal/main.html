@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Replayka overview</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 <body class="page-container">
 Hi, {user.name}!
@@ -21,19 +22,24 @@ Hi, {user.name}!
         {#if blog.key == selectedBlog}
             <tr><td colspan="3">
             <table class="pages">
-            {#for page in blogPages}
-                <tr>
-                    <td><b>{page.pageName}</b></td>
-                    <td>👁 {page.viewed}</td>
-                    <td>🗣 {page.responded}</td>
-                    <td>💯 {page.score}</td>
+            {#for pair in blogPages}
+                <tr class="dateRow">
+                    <td colspan="4">{time:format(pair.key, 'd MMM')}</td>
                 </tr>
-                {#if page.comments}
-                    {#for comment in page.comments}
-                        <tr>
-                        <td>💬</td> <td colspan="3">{comment}</td></tr>
-                    {/for}
-                {/if}
+                {#for page in pair.value}
+                    <tr>
+                        <td>{page.pageName}</td>
+                        <td>👁 {page.viewed}</td>
+                        <td>🗣 {page.responded}</td>
+                        <td>💯 {page.score}</td>
+                    </tr>
+                    {#if page.comments}
+                        {#for comment in page.comments}
+                            <tr>
+                            <td>💬</td> <td colspan="3">{comment}</td></tr>
+                        {/for}
+                    {/if}
+                {/for}
             {/for}
             </table>
             </td>

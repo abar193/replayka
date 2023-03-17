@@ -39,3 +39,8 @@ a, a:hover, a:visited, a:active {
 p {
     margin: 0;
 }
+
+.dateRow {
+    text-align: center;
+    font-weight: bold;
+}

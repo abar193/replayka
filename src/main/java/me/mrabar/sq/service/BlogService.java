@@ -1,5 +1,7 @@
 package me.mrabar.sq.service;
 
+import com.querydsl.core.types.Order;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.sql.SQLQueryFactory;
 import me.mrabar.replayka.QBlog;
@@ -100,32 +102,41 @@ public class BlogService {
     var blog = QBlog.blog;
     var request = QRequest.request;
     var response = QResponse.response;
+
+    var page = request.page;
+    var weekNum = Expressions.template(Timestamp.class, "date_trunc('week', {0})", request.time);
+    var countRequests = request.requestUuid.count();
+    var countResponses = response.requestUuid.count();
+    var averageScore = response.score.avg();
+    var responses = Expressions.template(String[].class, "array_agg({0})", response.comment);
     var timestampPath = Expressions.timePath(Timestamp.class, "tsmax");
 
     var result = queryFactory
         .select(
-            request.page,
-            request.requestUuid.count(),
-            response.requestUuid.count(),
-            response.score.avg(),
-            Expressions.template(String[].class, "array_agg({0})", response.comment),
+            page,
+            weekNum,
+            countRequests,
+            countResponses,
+            averageScore,
+            responses,
             request.time.max().as(timestampPath)
         )
         .from(request)
         .join(blog).on(blog.blogId.eq(request.blogId))
         .leftJoin(response).on(response.requestUuid.eq(request.requestUuid))
         .where(blog.blogKey.eq(selectedBlog.key()))
-        .groupBy(request.page)
-        .orderBy(timestampPath.desc())
+        .groupBy(weekNum, request.page)
+        .orderBy(new OrderSpecifier<>(Order.DESC, weekNum), timestampPath.desc())
         .fetch();
 
     return result.stream().map(t -> new PageOverviewComments(
         selectedBlog.key(),
-        decodeUrl(t.get(0, String.class)),
-        t.get(1, Long.class),
-        t.get(2, Long.class),
-        t.get(3, Double.class),
-        Arrays.stream(t.get(4, String[].class))
+        decodeUrl(t.get(page)),
+        t.get(weekNum),
+        t.get(countRequests),
+        t.get(countResponses),
+        t.get(averageScore),
+        Arrays.stream(t.get(responses))
             .filter(Objects::nonNull)
             .filter(Predicate.not(String::isBlank))
             .collect(Collectors.toList())

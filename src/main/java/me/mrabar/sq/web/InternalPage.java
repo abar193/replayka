@@ -6,6 +6,7 @@ import io.quarkus.qute.TemplateInstance;
 import io.quarkus.security.Authenticated;
 import io.quarkus.security.identity.SecurityIdentity;
 import io.vertx.ext.web.RoutingContext;
+import me.mrabar.sq.component.BlogComponent;
 import me.mrabar.sq.model.Blog;
 import me.mrabar.sq.service.BlogService;
 import me.mrabar.sq.service.UserService;
@@ -19,6 +20,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +38,9 @@ public class InternalPage {
 
   @Inject
   BlogService blogService;
+
+  @Inject
+  BlogComponent blogComponent;
 
   @Location("internal/main")
   Template main;
@@ -62,7 +67,10 @@ public class InternalPage {
     Optional<Blog> selectedBlog = byKey(blogs, blogKey);
 
     if (selectedBlog.isPresent()) {
-      var pages = selectedBlog.map(blogService::blogOverview).orElse(null);
+      var pages = selectedBlog
+          .map(blogService::blogOverview)
+          .map(blogComponent::groupByWeek)
+          .orElse(null);
       templateInstance.data("selectedBlog", selectedBlog.get().key());
       templateInstance = templateInstance.data("blogPages", pages);
     } else {
