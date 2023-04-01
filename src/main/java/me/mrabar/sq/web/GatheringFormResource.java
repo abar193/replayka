@@ -35,7 +35,7 @@ public class GatheringFormResource {
   ) throws BlogNotFoundException {
 
     var requestId = gatheringService.createRequestId(
-        key, page, context.request().host(), gatheringService.cleanHeaders(headers)
+        key, page, context.request().remoteAddress().hostAddress(), gatheringService.cleanHeaders(headers)
     );
 
     return form.data("data", requestId);
