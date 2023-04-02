@@ -7,20 +7,22 @@ import me.mrabar.replayka.QResponse;
 import me.mrabar.sq.component.PGJsonMapper;
 import me.mrabar.sq.exception.BlogNotFoundException;
 import me.mrabar.sq.model.RequestInfo;
+import me.mrabar.sq.web.InternalPage;
 import org.jboss.logging.Logger;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.core.HttpHeaders;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Singleton
 public class GatheringService {
   private static final Logger LOG = Logger.getLogger(GatheringService.class);
-  private static final List<String> STORED_HEADERS = List.of("Referer", "Accept-Language", "User-Agent");
+  private static final List<String> STORED_HEADERS = List.of(
+      "Referer",
+      HttpHeaders.ACCEPT_LANGUAGE,
+      HttpHeaders.USER_AGENT
+  );
   @Inject
   SQLQueryFactory factory;
   @Inject
@@ -80,6 +82,13 @@ public class GatheringService {
       if (headers.getHeaderString(h) != null) {
         m.put(h, headers.getHeaderString(h));
       }
+    }
+    if (Optional
+        .ofNullable(headers.getHeaderString(HttpHeaders.COOKIE))
+        .map(h -> h.contains(InternalPage.USER_TYPE_COOKIE))
+        .orElse(false)
+    ) {
+      m.put(InternalPage.USER_TYPE_COOKIE, InternalPage.BLOG_OWNER); // don't need the session cookies in my db
     }
     return m;
   }

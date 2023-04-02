@@ -7,7 +7,9 @@ public record PageOverviewComments(
     String blogName,
     String pageName,
     Timestamp weekNumber,
-    long viewed,
+    int viewedGenuine,
+    int viewedCrawlers,
+    int viewedOwner,
     long responded,
     Double score,
     List<String> comments // potential weak point

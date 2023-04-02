@@ -29,7 +29,7 @@ Hi, {user.name}!
                 {#for page in pair.value}
                     <tr>
                         <td>{page.pageName}</td>
-                        <td>👁 {page.viewed}</td>
+                        <td>👁 {page.viewedGenuine} 🤖 {page.viewedCrawlers} 🪞 {page.viewedOwner}</td>
                         <td>🗣 {page.responded}</td>
                         <td>💯 {page.score}</td>
                     </tr>
@@ -50,6 +50,8 @@ Hi, {user.name}!
 
 <button onclick="document.getElementById('register').showModal()">Register new blog</button>
 <button onclick="document.getElementById('embed').showModal()">Embed to your page</button>
+<a href="/internal/usertype">Update user type</a>
+
 <dialog id="register">
     <form action="/internal/blog" method="post">
         <button style="float: right" onclick="document.getElementById('register').close()">❎</button>
@@ -57,7 +59,7 @@ Hi, {user.name}!
         <table>
             <tr>
                 <td><label for="blogKey">Blog key (unique identifier) </label></td>
-                <td><input required type="text" name="blogKey"/></td>
+                <td><input required type="text" name="blogKey" size="10"/></td>
             </tr>
             <tr>
                 <td><label for="blogKey">Blog name </label></td>

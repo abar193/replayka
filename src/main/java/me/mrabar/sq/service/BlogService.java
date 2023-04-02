@@ -105,8 +105,8 @@ public class BlogService {
 
     var page = request.page;
     var weekNum = Expressions.template(Timestamp.class, "date_trunc('week', {0})", request.time);
-    var countRequests = request.requestUuid.count();
-    var countResponses = response.requestUuid.count();
+    var viewCount = Expressions.template(Integer[].class, "replayka.visitor_categories({0})", request.info);
+    var responsesCount = response.requestUuid.count();
     var averageScore = response.score.avg();
     var responses = Expressions.template(String[].class, "array_agg({0})", response.comment);
     var timestampPath = Expressions.timePath(Timestamp.class, "tsmax");
@@ -115,8 +115,8 @@ public class BlogService {
         .select(
             page,
             weekNum,
-            countRequests,
-            countResponses,
+            viewCount,
+            responsesCount,
             averageScore,
             responses,
             request.time.max().as(timestampPath)
@@ -133,8 +133,10 @@ public class BlogService {
         selectedBlog.key(),
         decodeUrl(t.get(page)),
         t.get(weekNum),
-        t.get(countRequests),
-        t.get(countResponses),
+        t.get(viewCount)[0],
+        t.get(viewCount)[1],
+        t.get(viewCount)[2],
+        t.get(responsesCount),
         t.get(averageScore),
         Arrays.stream(t.get(responses))
             .filter(Objects::nonNull)

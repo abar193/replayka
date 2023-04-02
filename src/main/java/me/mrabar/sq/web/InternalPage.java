@@ -15,10 +15,7 @@ import org.jboss.resteasy.reactive.RestQuery;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.core.*;
 import java.net.URI;
 import java.sql.Timestamp;
 import java.util.List;
@@ -29,6 +26,10 @@ import java.util.Optional;
 @Produces(MediaType.TEXT_HTML)
 public class InternalPage {
   public final static String ENDPOINT = "/internal";
+  public final static String USER_TYPE_COOKIE = "UserType";
+  public final static String BLOG_OWNER = "BlogOwner";
+
+  private final static int EXPIRES_SECONDS = 350 * 24 * 60 * 60; // Chrome limits to max 400 days
 
   @Inject
   SecurityIdentity identity;
@@ -96,12 +97,30 @@ public class InternalPage {
   ) {
     if (blogService.create(blogKey, blogName, blogUrl, blogTopic)) {
       blogService.assignOwnership(userService.getUser(identity), blogKey);
-      return Response.seeOther(URI.create(ENDPOINT)).build();
+      return Response
+          .seeOther(URI.create(ENDPOINT))
+          .cookie(userTypeCookie())
+          .build();
     }
     // todo: proper validation
     throw new IllegalArgumentException("Something went wrong, but since I can't be bothered by checking params, just "
-                                           + "go to DB and see for yourself if you are duplicating something, or "
-                                           + "whatever.");
+        + "go to DB and see for yourself if you are duplicating something, or "
+        + "whatever.");
+  }
+
+  @Path("/usertype")
+  @GET
+  public Response updateUserType() {
+    return Response
+        .seeOther(URI.create(ENDPOINT))
+        .cookie(userTypeCookie())
+        .build();
+  }
+
+  private NewCookie userTypeCookie() {
+    return new NewCookie(
+        new Cookie(USER_TYPE_COOKIE, BLOG_OWNER, "/", null, 2), BLOG_OWNER,
+        EXPIRES_SECONDS, false);
   }
 
   private Optional<Blog> byKey(List<Blog> blogs, String key) {
