@@ -29,7 +29,9 @@ public class InternalPage {
   public final static String USER_TYPE_COOKIE = "UserType";
   public final static String BLOG_OWNER = "BlogOwner";
 
+  private final static String SET_COOKIE = "Set-Cookie";
   private final static int EXPIRES_SECONDS = 350 * 24 * 60 * 60; // Chrome limits to max 400 days
+  private final static String COOKIE_VALUE = String.format("%s=%s; Max-Age=%d; SameSite=None; Secure", USER_TYPE_COOKIE, BLOG_OWNER, EXPIRES_SECONDS);
 
   @Inject
   SecurityIdentity identity;
@@ -99,7 +101,7 @@ public class InternalPage {
       blogService.assignOwnership(userService.getUser(identity), blogKey);
       return Response
           .seeOther(URI.create(ENDPOINT))
-          .cookie(userTypeCookie())
+          .header(SET_COOKIE, COOKIE_VALUE)
           .build();
     }
     // todo: proper validation
@@ -113,14 +115,8 @@ public class InternalPage {
   public Response updateUserType() {
     return Response
         .seeOther(URI.create(ENDPOINT))
-        .cookie(userTypeCookie())
+        .header(SET_COOKIE, COOKIE_VALUE)
         .build();
-  }
-
-  private NewCookie userTypeCookie() {
-    return new NewCookie(
-        new Cookie(USER_TYPE_COOKIE, BLOG_OWNER, "/", null, 2), BLOG_OWNER,
-        EXPIRES_SECONDS, false);
   }
 
   private Optional<Blog> byKey(List<Blog> blogs, String key) {
