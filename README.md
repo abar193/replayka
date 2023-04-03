@@ -12,6 +12,7 @@ Project features:
 
 - A [simple web form](src/main/resources/minification-sources/form.html) for feedback collection
 - [Flyway for schema migration](src/main/resources/db/migration/)
+- Somewhat [complicated SQL queries](src/main/java/me/mrabar/sq/service/BlogService.java) using QueryDSL 
 - [A GitHub OIDC for (blog owner) authentication](src/main/java/me/mrabar/sq/security/GithubAuthentication.java)
 - 0% code coverage 😎
 - [Stored pl/pgSQL functions and custom aggregation function in postgres](src/main/resources/db/migration/V1.0.3__Bot_Estimation.sql) for visitor type evaluation
