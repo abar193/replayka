@@ -1,12 +1,20 @@
 # Replayka
 
-Problem: a (low-traffic) static blog hosted with GitHub Pages.
-How many users actually read what I'm writing? What are their thoughts?
+I got tired of not knowing who visits my static blog (on GitHub pages) and what are their thoughts, so I created this service.
 
-Solution: Replayka. An open-source service that can be hosted at a low price and
-will analyze for you just that.
+It records how many times which page was visited, sorts visitors into genuine users and web crawlers and provides users
+with a feedback form.
 
-Made with Quarkus, QueryDSL and Java 17 in my free time.
+While this project could be easily implemented with running grep on access.log and PHP for form input, being a true 
+Java Senior I made it with Quarkus, QueryDSL and Java 17.
+
+Project features:
+
+- A [simple web form](src/main/resources/minification-sources/form.html) for feedback collection
+- [Flyway schema migration](src/main/resources/db/migration/)
+- [A GitHub OIDC for (blog owner) authentication](src/main/java/me/mrabar/sq/security/GithubAuthentication.java)
+- 0% code coverage 😎
+- [Stored pl/pgSQL functions and custom aggregation function in postgres](src/main/resources/db/migration/V1.0.3__Bot_Estimation.sql) for visitor type evaluation
 
 # Deployment
 
