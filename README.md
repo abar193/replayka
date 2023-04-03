@@ -11,7 +11,7 @@ Java Senior I made it with Quarkus, QueryDSL and Java 17.
 Project features:
 
 - A [simple web form](src/main/resources/minification-sources/form.html) for feedback collection
-- [Flyway schema migration](src/main/resources/db/migration/)
+- [Flyway for schema migration](src/main/resources/db/migration/)
 - [A GitHub OIDC for (blog owner) authentication](src/main/java/me/mrabar/sq/security/GithubAuthentication.java)
 - 0% code coverage 😎
 - [Stored pl/pgSQL functions and custom aggregation function in postgres](src/main/resources/db/migration/V1.0.3__Bot_Estimation.sql) for visitor type evaluation
